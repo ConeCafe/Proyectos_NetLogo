@@ -266,7 +266,7 @@ if segundo_mov [
   tick
 end
 
-to segundo
+to sig_turno
   ask patches with [pcolor = black] [set pcolor gray]
   set segundo_mov false
 
@@ -279,7 +279,7 @@ to maquina
     show n
 
 
-
+    ;;El funcionamiento de la IA es parecido al del jugador. Busca un recuadro libre que tenga ranas a una distancia de 2 casillas verticalmente u horizontalmente
 
 
 
@@ -962,10 +962,10 @@ NIL
 BUTTON
 63
 71
-149
+155
 104
 NIL
-segundo
+sig_turno
 NIL
 1
 T
@@ -977,10 +977,10 @@ NIL
 1
 
 MONITOR
-1112
-49
-1222
-102
+1023
+86
+1133
+139
 NIL
 Punt-Jugador
 1
@@ -988,10 +988,10 @@ Punt-Jugador
 13
 
 MONITOR
-928
-144
-1044
-197
+900
+86
+1016
+139
 NIL
 Punt-Maquina
 17

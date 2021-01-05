@@ -1,0 +1,8 @@
+El funcionamiento es el siguiente.
+
+Presionar el botón de setup primero para crear el tablero.
+Presionar el botón go y seleccionar una rana verde.
+Presionar el botón turn_sig para pasar al siguiente turno o cancelar la actual selección.
+
+Notas: El tablero es del tipo de la web brainking
+No hay saltos múltiples pero lo compensé con un tablero "redondo" para que la partida no dure tanto.
