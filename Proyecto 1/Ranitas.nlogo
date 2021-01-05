@@ -4,6 +4,8 @@ globals [
   segundo_mov
   coordenada_x
   coordenada_y
+  Punt-Maquina
+  Punt-Jugador
 ]
 breed [ casillas casilla ]
 breed [ ranas_verdes rana_verde ]
@@ -12,7 +14,8 @@ breed [ ranas_rojas rana_roja ]
 breed [ ranas_azules rana_azul ]
 
 to setup
-
+  set Punt-Maquina 0
+  set Punt-Maquina 0
   clear-all
     set cronometro 0
   reset-timer
@@ -119,22 +122,26 @@ if segundo_mov [
              ask patch(coordenada_x - 1)(coordenada_y)[
                if any? ranas_verdes-here[
                  ask ranas_verdes-here[
+                   set Punt-Jugador Punt-Jugador + 1
                    die
                   ]
                 ]
                if any? ranas_amarillas-here[
                  ask ranas_amarillas-here[
+                    set Punt-Jugador Punt-Jugador + 2
                    die
                   ]
                 ]
                if any? ranas_rojas-here[
                  ask ranas_rojas-here[
+                    set Punt-Jugador Punt-Jugador + 3
                    die
                   ]
                 ]
                if any? ranas_azules-here[
                  ask ranas_azules-here[
-                   die
+                    set Punt-Jugador Punt-Jugador + 4
+                    die
                   ]
                 ]
               ]
@@ -143,22 +150,26 @@ if segundo_mov [
              ask patch(coordenada_x + 1)(coordenada_y)[
                if any? ranas_verdes-here[
                  ask ranas_verdes-here[
+                    set Punt-Jugador Punt-Jugador + 1
                    die
                   ]
                 ]
                if any? ranas_amarillas-here[
                  ask ranas_amarillas-here[
+                    set Punt-Jugador Punt-Jugador + 2
                    die
                   ]
                 ]
                if any? ranas_rojas-here[
                  ask ranas_rojas-here[
+                    set Punt-Jugador Punt-Jugador + 3
                    die
                   ]
                 ]
                if any? ranas_azules-here[
                  ask ranas_azules-here[
-                   die
+                    set Punt-Jugador Punt-Jugador + 4
+                    die
                   ]
                 ]
               ]
@@ -168,22 +179,26 @@ if segundo_mov [
              ask patch(coordenada_x)(coordenada_y + 1)[
                if any? ranas_verdes-here[
                  ask ranas_verdes-here[
+                    set Punt-Jugador Punt-Jugador + 1
                    die
                   ]
                 ]
                if any? ranas_amarillas-here[
                  ask ranas_amarillas-here[
+                    set Punt-Jugador Punt-Jugador + 2
                    die
                   ]
                 ]
                if any? ranas_rojas-here[
                  ask ranas_rojas-here[
+                    set Punt-Jugador Punt-Jugador + 3
                    die
                   ]
                 ]
                if any? ranas_azules-here[
                  ask ranas_azules-here[
-                   die
+                    set Punt-Jugador Punt-Jugador + 4
+                    die
                   ]
                 ]
               ]
@@ -193,21 +208,25 @@ if segundo_mov [
              ask patch(coordenada_x)(coordenada_y - 1)[
                if any? ranas_verdes-here[
                  ask ranas_verdes-here[
+                    set Punt-Jugador Punt-Jugador + 1
                    die
                   ]
                 ]
                if any? ranas_amarillas-here[
                  ask ranas_amarillas-here[
+                    set Punt-Jugador Punt-Jugador + 2
                    die
                   ]
                 ]
                if any? ranas_rojas-here[
                  ask ranas_rojas-here[
+                    set Punt-Jugador Punt-Jugador + 3
                    die
                   ]
                 ]
                if any? ranas_azules-here[
                  ask ranas_azules-here[
+                    set Punt-Jugador Punt-Jugador + 4
                    die
                   ]
                 ]
@@ -216,6 +235,8 @@ if segundo_mov [
 
           ]
           ask patches with [pcolor = black] [set pcolor gray]
+          maquina
+
         ]
 
       ]
@@ -228,9 +249,13 @@ if segundo_mov [
           ;;se borra la rana verde
           ;;TODO, añadir contador
           ask ranas_verdes-here[
+            set Punt-Jugador Punt-Jugador + 1
             die
           ]
           set primer_turno? true
+          set segundo_mov true
+          maquina
+
         ]
       ]
     ]
@@ -244,6 +269,561 @@ end
 to segundo
   ask patches with [pcolor = black] [set pcolor gray]
   set segundo_mov false
+
+end
+
+to maquina
+  ask one-of patches with [not any? ranas_verdes-here and not any? ranas_amarillas-here and not any? ranas_rojas-here and not any? ranas_azules-here] [
+
+    let n random 4
+    show n
+
+
+
+
+
+
+    if n = 0 [ask patch-at -2 0[
+      if any? ranas_verdes-here or any? ranas_amarillas-here or any? ranas_rojas-here or any? ranas_azules-here[
+        if any? ranas_verdes-here[
+          ask ranas_verdes-here [
+            move-to patch-at 2 0
+            ask patch-at -1 0 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+        if any? ranas_amarillas-here[
+          ask ranas_amarillas-here [
+            move-to patch-at 2 0
+            ask patch-at -1 0 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+
+        if any? ranas_rojas-here[
+          ask ranas_rojas-here [
+            move-to patch-at 2 0
+            ask patch-at -1 0 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+        if any? ranas_azules-here[
+          ask ranas_azules-here [
+            move-to patch-at 2 0
+            ask patch-at -1 0 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+
+      ]
+    ]]
+
+
+
+
+
+
+
+    if n = 1 [ask patch-at 2 0[
+      if any? ranas_verdes-here or any? ranas_amarillas-here or any? ranas_rojas-here or any? ranas_azules-here[
+        if any? ranas_verdes-here[
+          ask ranas_verdes-here [
+            move-to patch-at -2 0
+            ask patch-at 1 0 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+        if any? ranas_amarillas-here[
+          ask ranas_amarillas-here [
+            move-to patch-at -2 0
+            ask patch-at 1 0 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+
+        if any? ranas_rojas-here[
+          ask ranas_rojas-here [
+            move-to patch-at -2 0
+            ask patch-at 1 0 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+        if any? ranas_azules-here[
+          ask ranas_azules-here [
+            move-to patch-at -2 0
+            ask patch-at 1 0 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+
+      ]
+      ]
+
+    ]
+
+
+
+    if n = 2 [ask patch-at 0 2[
+      if any? ranas_verdes-here or any? ranas_amarillas-here or any? ranas_rojas-here or any? ranas_azules-here[
+        if any? ranas_verdes-here[
+          ask ranas_verdes-here [
+            move-to patch-at 0 -2
+            ask patch-at 0 1 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+        if any? ranas_amarillas-here[
+          ask ranas_amarillas-here [
+            move-to patch-at 0 -2
+            ask patch-at 0 1 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+
+        if any? ranas_rojas-here[
+          ask ranas_rojas-here [
+            move-to patch-at 0 -2
+            ask patch-at 0 1 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+        if any? ranas_azules-here[
+          ask ranas_azules-here [
+            move-to patch-at 0 -2
+            ask patch-at 0 1 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+
+      ]
+      ]
+    ]
+
+
+
+
+
+
+    if n = 3 [ask patch-at 0 -2[
+      if any? ranas_verdes-here or any? ranas_amarillas-here or any? ranas_rojas-here or any? ranas_azules-here[
+        if any? ranas_verdes-here[
+          ask ranas_verdes-here [
+            move-to patch-at 0 2
+            ask patch-at 0 -1 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+        if any? ranas_amarillas-here[
+          ask ranas_amarillas-here [
+            move-to patch-at 0 2
+            ask patch-at 0 -1 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+
+        if any? ranas_rojas-here[
+          ask ranas_rojas-here [
+            move-to patch-at 0 2
+            ask patch-at 0 -1 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+        if any? ranas_azules-here[
+          ask ranas_azules-here [
+            move-to patch-at 0 2
+            ask patch-at 0 -1 [
+             if any? ranas_verdes-here[
+               ask ranas_verdes-here[
+                  set Punt-Maquina Punt-Maquina + 1
+                   die
+                ]
+              ]
+              if any? ranas_amarillas-here[
+               ask ranas_amarillas-here[
+                  set Punt-Maquina Punt-Maquina + 2
+                   die
+                ]
+              ]
+              if any? ranas_rojas-here[
+               ask ranas_rojas-here[
+                  set Punt-Maquina Punt-Maquina + 3
+                   die
+                ]
+              ]
+              if any? ranas_azules-here[
+               ask ranas_azules-here[
+                  set Punt-Maquina Punt-Maquina + 4
+                   die
+                ]
+              ]
+            ]
+          ]
+        ]
+
+      ]
+      ]
+    ]
+      ]
 
 end
 @#$#@#$#@
@@ -352,10 +932,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-264
-13
-390
-82
+893
+10
+1019
+79
 NIL
 Cronometro
 1
@@ -395,6 +975,28 @@ NIL
 NIL
 NIL
 1
+
+MONITOR
+1112
+49
+1222
+102
+NIL
+Punt-Jugador
+1
+1
+13
+
+MONITOR
+928
+144
+1044
+197
+NIL
+Punt-Maquina
+17
+1
+13
 
 @#$#@#$#@
 ## WHAT IS IT?
