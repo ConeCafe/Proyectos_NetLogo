@@ -54,7 +54,32 @@ end
 to go
   set cronometro timer
   if mouse-down?[
-
+    if primer_turno? [
+    ask patch (round mouse-xcor)(round mouse-ycor)[
+       if any? ranas_verdes-here or any? ranas_amarillas-here or any? ranas_rojas-here or any? ranas_azules-here[
+          ask patch (round mouse-xcor + 2)(round mouse-ycor)[
+           if not any? ranas_verdes-here and not any? ranas_amarillas-here and not any? ranas_rojas-here and not any? ranas_azules-here[
+              set pcolor black
+            ]
+          ]
+          ask patch (round mouse-xcor - 2)(round mouse-ycor)[
+           if not any? ranas_verdes-here and not any? ranas_amarillas-here and not any? ranas_rojas-here and not any? ranas_azules-here[
+              set pcolor black
+            ]
+          ]
+          ask patch (round mouse-xcor)(round mouse-ycor + 2)[
+           if not any? ranas_verdes-here and not any? ranas_amarillas-here and not any? ranas_rojas-here and not any? ranas_azules-here[
+              set pcolor black
+            ]
+          ]
+          ask patch (round mouse-xcor)(round mouse-ycor - 2)[
+           if not any? ranas_verdes-here and not any? ranas_amarillas-here and not any? ranas_rojas-here and not any? ranas_azules-here[
+              set pcolor black
+            ]
+          ]
+        ]
+      ]
+  ]
     ;;Si es el primer turno, se comprueba que sea una rana verde la seleccionada
    if not primer_turno? [
      ask patch (round mouse-xcor)(round mouse-ycor)[
@@ -67,9 +92,11 @@ to go
           set primer_turno? true
         ]
       ]
-
     ]
   ]
+
+
+
   tick
 end
 @#$#@#$#@
