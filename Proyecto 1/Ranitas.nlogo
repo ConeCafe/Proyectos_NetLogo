@@ -1,3 +1,7 @@
+globals [
+  cronometro ;;cronometro
+  primer_turno? ;;se inicia en false
+]
 breed [ casillas casilla ]
 breed [ ranas_verdes rana_verde ]
 breed [ ranas_amarillas rana_amarilla ]
@@ -5,7 +9,11 @@ breed [ ranas_rojas rana_roja ]
 breed [ ranas_azules rana_azul ]
 
 to setup
+
   clear-all
+    set cronometro 0
+  reset-timer
+  set primer_turno? false
   set-default-shape casillas "square"
   ;;El juego bien ahora se podría llamar tortugitas
   set-default-shape ranas_verdes "turtle"
@@ -40,7 +48,29 @@ ask n-of rangen-blue patches with [not any? ranas_verdes-here and not any? ranas
       set color blue
       ]
   ]
+reset-ticks
+end
 
+to go
+  set cronometro timer
+  if mouse-down?[
+
+    ;;Si es el primer turno, se comprueba que sea una rana verde la seleccionada
+   if not primer_turno? [
+     ask patch (round mouse-xcor)(round mouse-ycor)[
+        if any? ranas_verdes-here[
+          ;;se borra la rana verde
+          ;;TODO, añadir contador
+          ask ranas_verdes-here[
+            die
+          ]
+          set primer_turno? true
+        ]
+      ]
+
+    ]
+  ]
+  tick
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -64,17 +94,17 @@ GRAPHICS-WINDOW
 5
 -6
 5
-0
-0
+1
+1
 1
 ticks
 30.0
 
 BUTTON
-61
-37
-127
-70
+40
+10
+106
+43
 NIL
 setup
 NIL
@@ -90,7 +120,7 @@ NIL
 SLIDER
 14
 113
-186
+106
 146
 rangen
 rangen
@@ -103,10 +133,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-13
-186
+14
 185
-219
+106
+218
 rangen-red
 rangen-red
 0
@@ -118,10 +148,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-13
-149
-185
-182
+14
+148
+106
+181
 rangen-yell
 rangen-yell
 0
@@ -133,10 +163,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-13
-222
-185
-255
+14
+221
+106
+254
 rangen-blue
 rangen-blue
 0
@@ -146,6 +176,34 @@ rangen-blue
 1
 NIL
 HORIZONTAL
+
+MONITOR
+264
+13
+390
+82
+NIL
+Cronometro
+1
+1
+17
+
+BUTTON
+117
+10
+180
+43
+NIL
+go
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
