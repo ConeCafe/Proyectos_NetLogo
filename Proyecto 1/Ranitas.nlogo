@@ -1,6 +1,9 @@
 globals [
   cronometro ;;cronometro
   primer_turno? ;;se inicia en false
+  segundo_mov
+  coordenada_x
+  coordenada_y
 ]
 breed [ casillas casilla ]
 breed [ ranas_verdes rana_verde ]
@@ -14,6 +17,7 @@ to setup
     set cronometro 0
   reset-timer
   set primer_turno? false
+  set segundo_mov false
   set-default-shape casillas "square"
   ;;El juego bien ahora se podría llamar tortugitas
   set-default-shape ranas_verdes "turtle"
@@ -54,8 +58,13 @@ end
 to go
   set cronometro timer
   if mouse-down?[
-    if primer_turno? [
-    ask patch (round mouse-xcor)(round mouse-ycor)[
+    ;;Primer movimiento para ver las casillas disponibles
+
+    if not segundo_mov [
+      if primer_turno?[
+     ask patch (round mouse-xcor)(round mouse-ycor)[
+        ;;reseteamos las casillas disponibles
+        set pcolor gray
        if any? ranas_verdes-here or any? ranas_amarillas-here or any? ranas_rojas-here or any? ranas_azules-here[
           ask patch (round mouse-xcor + 2)(round mouse-ycor)[
            if not any? ranas_verdes-here and not any? ranas_amarillas-here and not any? ranas_rojas-here and not any? ranas_azules-here[
@@ -77,9 +86,141 @@ to go
               set pcolor black
             ]
           ]
+            set coordenada_x round mouse-xcor
+            set coordenada_y round mouse-ycor
+          set segundo_mov true
+      ]]]
+    ]
+if segundo_mov [
+      ask patch (round mouse-xcor)(round mouse-ycor)[
+        if pcolor = black [
+
+         ask patch (coordenada_x)(coordenada_y)[
+
+            if any? ranas_verdes-here[
+             ask ranas_verdes-here [
+                setxy round mouse-xcor round mouse-ycor
+              ]
+            ]if any? ranas_amarillas-here[
+             ask ranas_amarillas-here [
+                setxy round mouse-xcor round mouse-ycor
+              ]
+            ]if any? ranas_rojas-here[
+             ask ranas_rojas-here [
+                setxy round mouse-xcor round mouse-ycor
+              ]
+            ]if any? ranas_azules-here[
+             ask ranas_azules-here [
+                setxy round mouse-xcor round mouse-ycor
+              ]
+
+            ]
+            if coordenada_x > round mouse-xcor [
+             ask patch(coordenada_x - 1)(coordenada_y)[
+               if any? ranas_verdes-here[
+                 ask ranas_verdes-here[
+                   die
+                  ]
+                ]
+               if any? ranas_amarillas-here[
+                 ask ranas_amarillas-here[
+                   die
+                  ]
+                ]
+               if any? ranas_rojas-here[
+                 ask ranas_rojas-here[
+                   die
+                  ]
+                ]
+               if any? ranas_azules-here[
+                 ask ranas_azules-here[
+                   die
+                  ]
+                ]
+              ]
+            ]
+            if coordenada_x < round mouse-xcor [
+             ask patch(coordenada_x + 1)(coordenada_y)[
+               if any? ranas_verdes-here[
+                 ask ranas_verdes-here[
+                   die
+                  ]
+                ]
+               if any? ranas_amarillas-here[
+                 ask ranas_amarillas-here[
+                   die
+                  ]
+                ]
+               if any? ranas_rojas-here[
+                 ask ranas_rojas-here[
+                   die
+                  ]
+                ]
+               if any? ranas_azules-here[
+                 ask ranas_azules-here[
+                   die
+                  ]
+                ]
+              ]
+            ]
+
+            if coordenada_y < round mouse-ycor [
+             ask patch(coordenada_x)(coordenada_y + 1)[
+               if any? ranas_verdes-here[
+                 ask ranas_verdes-here[
+                   die
+                  ]
+                ]
+               if any? ranas_amarillas-here[
+                 ask ranas_amarillas-here[
+                   die
+                  ]
+                ]
+               if any? ranas_rojas-here[
+                 ask ranas_rojas-here[
+                   die
+                  ]
+                ]
+               if any? ranas_azules-here[
+                 ask ranas_azules-here[
+                   die
+                  ]
+                ]
+              ]
+            ]
+
+            if coordenada_y > round mouse-ycor [
+             ask patch(coordenada_x)(coordenada_y - 1)[
+               if any? ranas_verdes-here[
+                 ask ranas_verdes-here[
+                   die
+                  ]
+                ]
+               if any? ranas_amarillas-here[
+                 ask ranas_amarillas-here[
+                   die
+                  ]
+                ]
+               if any? ranas_rojas-here[
+                 ask ranas_rojas-here[
+                   die
+                  ]
+                ]
+               if any? ranas_azules-here[
+                 ask ranas_azules-here[
+                   die
+                  ]
+                ]
+              ]
+            ]
+
+          ]
+          ask patches with [pcolor = black] [set pcolor gray]
         ]
+
       ]
-  ]
+
+    ]
     ;;Si es el primer turno, se comprueba que sea una rana verde la seleccionada
    if not primer_turno? [
      ask patch (round mouse-xcor)(round mouse-ycor)[
@@ -98,6 +239,12 @@ to go
 
 
   tick
+end
+
+to segundo
+  ask patches with [pcolor = black] [set pcolor gray]
+  set segundo_mov false
+
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -223,6 +370,23 @@ BUTTON
 NIL
 go
 T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+63
+71
+149
+104
+NIL
+segundo
+NIL
 1
 T
 OBSERVER
